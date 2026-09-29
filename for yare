@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى أغلى ما في حياتي 💖</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* كارت الهدية الرومانسي */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 40px 25px;
+            border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(220, 53, 69, 0.2);
+            border: 2px solid rgba(255, 182, 193, 0.5);
+            text-align: center;
+            max-width: 390px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* شكل القلب ينبض */
+        .heart-icon {
+            font-size: 75px;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 26px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .romantic-text {
+            font-size: 16px;
+            color: #b02a37;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-start {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 65, 108, 0.4);
+        }
+
+        .btn-start:active {
+            transform: scale(0.97);
+        }
+
+        .btn-later {
+            background-color: #a8a8a8;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+
+        .gift-content {
+            display: none;
+        }
+
+        .gift-content.active {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .main-content.hidden {
+            display: none;
+        }
+
+        /* قائمة الأغاني */
+        .playlist {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .song-btn {
+            background: #fff;
+            color: #d63384;
+            border: 2px solid #f8d7da;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .song-btn.active-song {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
+        }
+
+        /* القلوب والورود المتساقطة */
+        .floating-element {
+            position: absolute;
+            animation: float 5s linear infinite;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- مشغل الصوت -->
+    <audio id="bgMusic" loop></audio>
+
+    <div class="card">
+        <!-- الواجهة الرئيسية -->
+        <div id="mainContent" class="main-content">
+            <span class="heart-icon">💖</span>
+            <h1>جاهزة للهدية يا يارا؟</h1>
+            <p>عملتلك المفاجأة دي بخصوص عشانك.. اختاري بعناية، لأن زرار "مش دلوقتي" بيهرب ومستحيل تمسكيه! 😉🌹</p>
+
+            <div class="btn-container">
+                <button class="btn btn-start" onclick="openGift()">افتحي الهدية 🎁❤️</button>
+                <button id="noBtn" class="btn btn-later" onclick="spinAndMove()" onmouseover="spinAndMove()" ontouchstart="spinAndMove()">مش دلوقتي 🙈</button>
+            </div>
+        </div>
+
+        <!-- صفحة الهدية الرومانسية مع الأغاني -->
+        <div id="giftContent" class="gift-content">
+            <span class="heart-icon">🌹✨</span>
+            <h1>كل سنة وأنتِ حبيب أشيائي!</h1>
+            <p class="romantic-text">وجودك في حياتي بيخلي كل حاجة ألمع وأجمل.. الأغاني دي أهداء خاص لقلبك ❤️</p>
+            
+            <div class="playlist">
+                <button class="song-btn active-song" onclick="playSong(0)" id="song0">🎶 She Keeps On Texting Me</button>
+                <button class="song-btn" onclick="playSong(1)" id="song1">🌸 يا بسبوسة (توليب)</button>
+                <button class="song-btn" onclick="playSong(2)" id="song2">🧸 كوتي أمور كوتي شطور</button>
+            </div>
+
+            <button class="btn btn-start" style="margin-top: 20px;" onclick="toggleAudio()" id="musicBtn">إيقاف الموسيقى ⏸️</button>
+        </div>
+    </div>
+
+    <script>
+        let currentRotation = 0;
+
+        const songs = [
+            "she_keeps_on_texting_me.mp3",
+            "yabaspousa.mp3",
+            "kouty_amour.mp3"
+        ];
+
+        let currentSongIndex = 0;
+
+        function spinAndMove() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40);
+            currentRotation += 360;
+
+            btn.style.position = 'fixed';
+            btn.style.left = Math.max(20, x) + 'px';
+            btn.style.top = Math.max(20, y) + 'px';
+            btn.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        function openGift() {
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('giftContent').classList.add('active');
+            
+            playSong(0);
+
+            // بدء تساقط القلوب والورود في الخلفية
+            setInterval(createFloatingElement, 250);
+        }
+
+        function playSong(index) {
+            currentSongIndex = index;
+            const audio = document.getElementById('bgMusic');
+            audio.src = songs[index];
+            audio.play().catch(() => console.log("تحذير: يتطلب إذن لتشغيل الصوت"));
+
+            for (let i = 0; i < songs.length; i++) {
+                const btn = document.getElementById(`song${i}`);
+                if (i === index) {
+                    btn.classList.add('active-song');
+                } else {
+                    btn.classList.remove('active-song');
+                }
+            }
+            document.getElementById('musicBtn').innerText = "إيقاف الموسيقى ⏸️";
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = "إيقاف الموسيقى ⏸️";
+            } else {
+                audio.pause();
+                btn.innerText = "تشغيل الموسيقى ▶️";
+            }
+        }
+
+        // إنشاء قلوب وورود متساقطة
+        function createFloatingElement() {
+            const el = document.createElement('div');
+            el.classList.add('floating-element');
+            
+            const icons = ['❤️', '💖', '🌹', '✨', '💕', '🌸'];
+            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 15 + 18) + 'px';
+            el.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            
+            document.body.appendChild(el);
+
+            setTimeout(() => {
+                el.remove();
+            }, 4500);
+        }
+    </script>
+
+</body>
+</html>
